@@ -1,0 +1,21 @@
+{
+    "name": "niels-nijens/protocol-stream",
+    "type": "library",
+    "description": "A library to create stream wrappers in PHP.",
+    "keywords": ["stream", "wrapper"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niels Nijens",
+            "email": "nijens.niels@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nijens\\ProtocolStream\\": "src/"
+        }
+    }
+}
