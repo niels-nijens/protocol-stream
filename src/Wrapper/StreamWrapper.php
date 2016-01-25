@@ -194,9 +194,14 @@ class StreamWrapper implements StreamWrapperInterface
             return false;
         }
 
-        $this->context = fopen($this->getPath($path), $mode, false);
+        $realPath = $this->getPath($path);
+        if (empty($realPath)) {
+            return false;
+        }
+
+        $this->context = fopen($realPath, $mode, false);
         if ($this->context !== false && $use_path) {
-            $opened_path = $this->getPath($path);
+            $opened_path = $realPath;
         }
 
         return $this->context !== false;
