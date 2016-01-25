@@ -176,6 +176,7 @@ class StreamWrapper implements StreamWrapperInterface
                 return chown($this->getPath($path), $value);
             case STREAM_META_TOUCH:
                 array_unshift($value, $this->getPath($path));
+
                 return call_user_func_array('touch', $value);
         }
 
@@ -185,7 +186,7 @@ class StreamWrapper implements StreamWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public function stream_open($path, $mode, $options, & $opened_path)
+    public function stream_open($path, $mode, $options, &$opened_path)
     {
         $use_path = (($options & STREAM_USE_PATH) > 0);
 
@@ -198,7 +199,7 @@ class StreamWrapper implements StreamWrapperInterface
             $opened_path = $this->getPath($path);
         }
 
-        return ($this->context !== false);
+        return $this->context !== false;
     }
 
     /**

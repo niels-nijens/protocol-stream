@@ -102,7 +102,7 @@ interface StreamWrapperInterface
      *
      * @return bool
      */
-    public function stream_open($path, $mode, $options, & $opened_path);
+    public function stream_open($path, $mode, $options, &$opened_path);
 
     /**
      * @param int $count
