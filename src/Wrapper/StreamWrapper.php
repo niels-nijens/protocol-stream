@@ -322,10 +322,12 @@ class StreamWrapper implements StreamWrapperInterface
 
         $stream = $this->getStreamByPathScheme($path);
         if ($stream instanceof StreamInterface) {
-            foreach ($stream->getPaths() as $streamPrefix => $streamPath) {
-                $realPath = $this->getRealPath($uri, $streamPrefix, $streamPath);
-                if (strpos($realPath, $streamPath) === 0) {
-                    return $realPath;
+            foreach ($stream->getPaths() as $streamDomain => $streamPath) {
+                if ($streamDomain === $uri['host']) {
+                    $realPath = $this->getRealPath($uri, $streamPath);
+                    if (strpos($realPath, $streamPath) === 0) {
+                        return $realPath;
+                    }
                 }
             }
         }
@@ -334,18 +336,14 @@ class StreamWrapper implements StreamWrapperInterface
     /**
      * Returns the real path.
      *
-     * @param array      $uri
-     * @param string|int $streamPrefix
-     * @param string     $streamPath
+     * @param array  $uri
+     * @param string $streamPath
      *
      * @return string
      */
-    private function getRealPath(array $uri, $streamPrefix, $streamPath)
+    private function getRealPath(array $uri, $streamPath)
     {
         $path = $streamPath;
-        if (is_int($streamPrefix)) {
-            $path .= '/'.$uri['host'];
-        }
         if (isset($uri['path'])) {
             $path .= $uri['path'];
         }
