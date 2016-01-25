@@ -6,9 +6,15 @@ This project adheres to [Semantic Versioning 2](http://semver.org/).
 ## [Unreleased]
 
 
+## [1.0.1] - 2016-01-25
+
+### Fixed
+- Stream wrapper domain to allowed path identification (#6)
+
 ## 1.0.0 - 2016-01-25
 
 Initial release.
 
 
-[Unreleased]: https://github.com/niels-nijens/protocol-stream/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/niels-nijens/protocol-stream/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/niels-nijens/protocol-stream/compare/1.0.0...1.0.1
