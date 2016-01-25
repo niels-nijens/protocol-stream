@@ -19,7 +19,16 @@ $ composer require niels-nijens/protocol-stream
 
 ## Usage
 
+``` php
+<?php
 
+$stream = new Stream('stream', array('/allowed/path'));
+
+StreamManager::create()->registerStream($stream);
+
+readfile('stream://file-in-allowed-path.ext');
+
+```
 
 ## Author
 
