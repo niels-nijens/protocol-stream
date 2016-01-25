@@ -22,11 +22,11 @@ $ composer require niels-nijens/protocol-stream
 ``` php
 <?php
 
-$stream = new Stream('stream', array('/allowed/path'));
+$stream = new Stream('stream', array('domain' => '/allowed/path'));
 
 StreamManager::create()->registerStream($stream);
 
-readfile('stream://file-in-allowed-path.ext');
+readfile('stream://domain/file-in-allowed-path.ext');
 
 ```
 
