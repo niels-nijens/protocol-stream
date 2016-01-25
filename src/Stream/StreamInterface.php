@@ -5,7 +5,7 @@ namespace Nijens\ProtocolStream\Stream;
 /**
  * StreamInterface.
  *
- * @author Niels Nijens <niels@connectholland.nl>
+ * @author Niels Nijens <nijens.niels@gmail.com>
  */
 interface StreamInterface
 {
