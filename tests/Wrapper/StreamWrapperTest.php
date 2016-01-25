@@ -18,8 +18,8 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $stream = new Stream('test', array(realpath(__DIR__.'/../Resources/')), true);
-        $streamReadOnly = new Stream('test-read', array(realpath(__DIR__.'/../Resources/')), false);
+        $stream = new Stream('test', array('domain' => realpath(__DIR__.'/../Resources/')), true);
+        $streamReadOnly = new Stream('test-read', array('domain' => realpath(__DIR__.'/../Resources/')), false);
 
         StreamManager::create()
                 ->registerStream($stream)
@@ -41,7 +41,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testDirectoryRead()
     {
-        $this->assertSame(array('.', '..', 'directory', 'file.ext'), scandir('test://./'));
+        $this->assertSame(array('.', '..', 'directory', 'file.ext'), scandir('test://domain/'));
     }
 
     /**
@@ -49,7 +49,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testDirectoryRewind()
     {
-        $directoryResource = opendir('test://./');
+        $directoryResource = opendir('test://domain/');
         $entry = readdir($directoryResource);
         rewinddir($directoryResource);
 
@@ -61,7 +61,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testDirectoryCreate()
     {
-        $this->assertTrue(mkdir('test://directory/in-a-directory'));
+        $this->assertTrue(mkdir('test://domain/directory/in-a-directory'));
     }
 
     /**
@@ -69,7 +69,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testDirectoryCreateFailsOnReadOnlyStream()
     {
-        $this->assertFalse(mkdir('test-read://directory/in-a-directory'));
+        $this->assertFalse(mkdir('test-read://domain/directory/in-a-directory'));
     }
 
     /**
@@ -77,7 +77,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testDirectoryRemove()
     {
-        $this->assertTrue(rmdir('test://directory/in-a-directory'));
+        $this->assertTrue(rmdir('test://domain/directory/in-a-directory'));
     }
 
     /**
@@ -85,7 +85,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testTouch()
     {
-        $this->assertTrue(touch('test://directory/with-a-file.ext'));
+        $this->assertTrue(touch('test://domain/directory/with-a-file.ext'));
         $this->assertFileExists(__DIR__.'/../Resources/directory/with-a-file.ext');
     }
 
@@ -94,7 +94,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testTouchFailsOnReadOnlyStream()
     {
-        $this->assertFalse(touch('test-read://directory/with-a-file.ext'));
+        $this->assertFalse(touch('test-read://domain/directory/with-a-file.ext'));
     }
 
     /**
@@ -102,7 +102,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testUnlink()
     {
-        $this->assertTrue(unlink('test://directory/with-a-file.ext'));
+        $this->assertTrue(unlink('test://domain/directory/with-a-file.ext'));
         $this->assertFileNotExists(__DIR__.'/../Resources/directory/with-a-file.ext');
     }
 
@@ -111,7 +111,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testUnlinkFailsOnReadOnlyStream()
     {
-        $this->assertFalse(touch('test-read://file.ext'));
+        $this->assertFalse(touch('test-read://domain/file.ext'));
     }
 
     /**
@@ -119,7 +119,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testReadFile()
     {
-        $this->assertSame("contents\n", file_get_contents('test://file.ext'));
+        $this->assertSame("contents\n", file_get_contents('test://domain/file.ext'));
     }
 
     /**
@@ -129,10 +129,10 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testWriteFile()
     {
-        $this->assertSame(9, file_put_contents('test://written-file.ext', "contents\n"));
+        $this->assertSame(9, file_put_contents('test://domain/written-file.ext', "contents\n"));
         $this->assertFileExists(__DIR__.'/../Resources/written-file.ext');
 
-        unlink('test://written-file.ext');
+        unlink('test://domain/written-file.ext');
     }
 
     /**
@@ -140,7 +140,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testWriteFileFailsOnReadOnlyStream()
     {
-        $this->assertFalse(@file_put_contents('test-read://written-file.ext', "contents\n"));
+        $this->assertFalse(@file_put_contents('test-read://domain/written-file.ext', "contents\n"));
     }
 
     /**
@@ -148,7 +148,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testRename()
     {
-        $this->assertTrue(rename('test://file.ext', 'test://file.ext'));
+        $this->assertTrue(rename('test://domain/file.ext', 'test://domain/file.ext'));
     }
 
     /**
@@ -156,7 +156,7 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
      */
     public function testRenameFailsOnReadOnlyStream()
     {
-        $this->assertFalse(rename('test-read://file.ext', 'test-read://file.ext'));
+        $this->assertFalse(rename('test-read://domain/file.ext', 'test-read://domain/file.ext'));
     }
 
     /**
@@ -179,11 +179,11 @@ class StreamWrapperTest extends PHPUnit_Framework_TestCase
     public function provideTestStreamWrapperPathEscaping()
     {
         return array(
-            array('test://./../'),
-            array('test://./directory/../../../file.ext'),
-            array('test://.//directory//../../../file.ext'),
-            array('test://./../StreamManagerTest.php'),
-            array('test://./../../../../../../../../../StreamManagerTest.php'),
+            array('test://domain/../'),
+            array('test://domain/directory/../../../file.ext'),
+            array('test://domain//directory//../../../file.ext'),
+            array('test://domain/../StreamManagerTest.php'),
+            array('test://domain/../../../../../../../../../StreamManagerTest.php'),
         );
     }
 }
