@@ -194,7 +194,7 @@ class StreamWrapper implements StreamWrapperInterface
             return false;
         }
 
-        $this->context = fopen($this->getPath($path), $mode, false);
+        $this->context = @fopen($this->getPath($path), $mode, false);
         if ($this->context !== false && $use_path) {
             $opened_path = $this->getPath($path);
         }
@@ -275,7 +275,7 @@ class StreamWrapper implements StreamWrapperInterface
      */
     public function url_stat($path, $flags)
     {
-        return stat($this->getPath($path));
+        return @stat($this->getPath($path));
     }
 
     /**
