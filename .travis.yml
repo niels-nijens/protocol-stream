@@ -4,6 +4,7 @@ sudo: false
 
 matrix:
   include:
+    - php: 5.3
     - php: 5.4
     - php: 5.5
     - php: 5.6
@@ -18,7 +19,9 @@ branches:
 
 before_install: composer self-update
 
-install: composer install
+install: 
+  - if [[ $TRAVIS_PHP_VERSION = 5.3 ]]; then composer update; fi;
+  - composer install
 
 before_script: mkdir -p build/logs
 
